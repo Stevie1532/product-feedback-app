@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SortButton } from "../components/common/Button";
-import Feedback_Template from "../components/common/feedBacks";
+import FeedbackCard from "../components/common/feedBacks";
 
 const HomePage = () => {
   const [sortOption, setSortOption] = useState<string>("Most Upvotes");
@@ -11,12 +11,109 @@ const HomePage = () => {
   const handleSortChange = (option: string): void => {
     setSortOption(option);
   };
+
+  const [feedbackList, setFeedbackList] = useState([
+    {
+      id: 1,
+      votes: 112,
+      title: "Add tags for solutions",
+      description: "Easier to search for solutions based on a specific stack.",
+      category: "Enhancement",
+      comments: 2,
+    },
+    {
+      id: 2,
+      votes: 99,
+      title: "Add a dark theme option",
+      description:
+        "It would help people with light sensitivities and who prefer dark mode.",
+      category: "Feature",
+      comments: 4,
+    },
+    {
+      id: 3,
+      votes: 65,
+      title: "Q&A within the challenge hubs",
+      description: "Challenge-specific Q&A would make for easy reference.",
+      category: "Feature",
+      comments: 1,
+    },
+    {
+      id: 4,
+      votes: 51,
+      title: "Allow image/video upload to feedback",
+      description: "Images and screencasts can enhance comments on solutions.",
+      category: "Enhancement",
+      comments: 2,
+    },
+    {
+      id: 5,
+      votes: 45,
+      title: "Add customizable widgets",
+      description: "Widgets for more tailored user experiences.",
+      category: "Feature",
+      comments: 3,
+    },
+    {
+      id: 6,
+      votes: 34,
+      title: "Improve accessibility options",
+      description: "Better support for screen readers and keyboard navigation.",
+      category: "Enhancement",
+      comments: 1,
+    },
+    {
+      id: 7,
+      votes: 29,
+      title: "Add multi-language support",
+      description: "Support for more languages to cater to a global audience.",
+      category: "Feature",
+      comments: 5,
+    },
+  ]);
+
+  // Separate filtered list
+  const [filteredFeedbackList, setFilteredFeedbackList] =
+    useState(feedbackList);
+
+  // const handleCategoryChange = (category: string) => {
+  //   setSelectedCategory(category);
+  //   setFilteredFeedbackList(
+  //     category === "All"
+  //       ? feedbackList
+  //       : feedbackList.filter((feedback) => feedback.category === category)
+  //   );
+  // };
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setFilteredFeedbackList(
+      feedbackList.filter(
+        (feedback) => category === "All" || feedback.category === category
+      )
+    );
+  };
+
+  const handleVote = (id: number, newVote: number) => {
+    // Update the original feedbackList
+    const updatedFeedbackList = feedbackList.map((item) =>
+      item.id === id ? { ...item, votes: newVote } : item
+    );
+
+    // Update the original and filtered lists
+    setFeedbackList(updatedFeedbackList);
+    setFilteredFeedbackList(
+      updatedFeedbackList.filter(
+        (feedback) =>
+          selectedCategory === "All" || feedback.category === selectedCategory
+      )
+    );
+  };
+
   return (
-    <main className="overflow-y-auto h-screen w-screen bg-zinc flex flex-col space-x-10  px-40 py-32 ">
+    <main className="overflow-y-auto h-screen w-screen bg-gray flex flex-col space-x-10  px-40 py-32 ">
       <section className="flex flex-row  space-x-6">
-        <div className="w-[400px] bg-zinc p-6 rounded-lg shadow-sm">
-          {/* <aside className="w-72 bg-gray p-6 rounded-lg shadow-sm"> */}
-          {/* Header */}
+        <div className="w-[400px] bg-gray p-6 rounded-lg shadow-sm">
+          {/* Sidebar */}
           <div className="bg-gradient-to-r from-blue via-purple to-pink h-[150px] text-white p-6 rounded-lg mb-6 z-40">
             <div className="mt-12">
               <h1 className="text-2xl font-bold font-jost">Frontend Mentor</h1>
@@ -37,7 +134,7 @@ const HomePage = () => {
                         ? "bg-blue text-white"
                         : "bg-gray text-blue"
                     }`}
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() => handleCategoryChange(category)}
                   >
                     {category}
                   </button>
@@ -83,8 +180,9 @@ const HomePage = () => {
             </ul>
           </div>
         </div>
-        {/* </aside> */}
-        <div className="w-full bg-zinc p-6 rounded-lg shadow-sm">
+
+        {/* Main Content */}
+        <div className="w-full bg-gray p-6 rounded-lg shadow-sm">
           <header className="flex items-center justify-between bg-midnightBlue text-white p-4 rounded-lg mb-6">
             {/* Suggestions Count */}
             <div className="flex items-center gap-4">
@@ -102,15 +200,16 @@ const HomePage = () => {
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-              <span className="text-sm font-bold font-jost">6 Suggestions</span>
+              <span className="text-sm font-bold font-jost">
+                {filteredFeedbackList.length} Suggestions
+              </span>
+
               {/* Sort Dropdown */}
-              <div className="">
-                <SortButton
-                  options={sortOptions}
-                  selectedOption={sortOption}
-                  onOptionSelect={handleSortChange}
-                />
-              </div>
+              <SortButton
+                options={sortOptions}
+                selectedOption={sortOption}
+                onOptionSelect={handleSortChange}
+              />
             </div>
 
             {/* Add Feedback Button */}
@@ -118,8 +217,27 @@ const HomePage = () => {
               + Add Feedback
             </button>
           </header>
-          <div>
-            <Feedback_Template />
+
+          {/* Feedback List */}
+          <div
+            className="overflow-hidden overflow-y-auto max-h-[500px] space-y-4"
+            style={{ maxHeight: "500px" }}
+          >
+            {/* {filteredFeedbackList.map((feedback) => (
+              <FeedbackCard
+                key={feedback.id}
+                {...feedback}
+                onVote={(newVote) => handleVote(feedback.id, newVote)}
+                className="hover:shadow-lg transition-shadow duration-200"
+              />
+            ))} */}
+            {filteredFeedbackList.map((feedback) => (
+              <FeedbackCard
+                key={feedback.id}
+                {...feedback}
+                onVote={handleVote}
+              />
+            ))}
           </div>
         </div>
       </section>
