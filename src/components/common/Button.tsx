@@ -100,7 +100,7 @@ const SortButton: React.FC<SortButtonProps> = ({
       {menuOpen && (
         <ul
           id="sort-menu"
-          className="absolute  text-midnightBlue mt-2 w-48 rounded shadow-lg"
+          className="absolute  text-midnightBlue mt-7 w-48 rounded-lg shadow-lg"
           role="menu"
           aria-labelledby="sort-button"
         >
@@ -123,3 +123,61 @@ const SortButton: React.FC<SortButtonProps> = ({
 };
 
 export { SortButton };
+interface VoteButtonProps {
+  votes: number; // Number of votes
+  onVote: (newVote: number) => void; // Callback to handle voting
+  className?: string; // Additional CSS classes for customization
+}
+
+const VoteButton: React.FC<VoteButtonProps> = ({
+  votes,
+  onVote,
+  className = "",
+}) => {
+  const [hasVoted, setHasVoted] = useState<boolean>(false);
+
+  const handleVote = (): void => {
+    const newVote = hasVoted ? votes - 1 : votes + 1;
+    onVote(newVote);
+    setHasVoted(!hasVoted);
+  };
+
+  return (
+    <button
+      onClick={handleVote}
+      className={`flex flex-col items-center space-y-1 px-4 py-2 w-12 text-sm font-medium rounded-lg focus:outline-none focus:ring transition-all duration-200 ${
+        hasVoted ? "bg-blue" : "bg-gray"
+      } ${className}`}
+    >
+      <svg
+        className={`h-5 w-5 ${
+          hasVoted
+            ? "text-white font-jost font-regular"
+            : "text-midnightBlue font-jost font-regular"
+        }`}
+        fill="none"
+        stroke={hasVoted ? "white" : "midnightBlue"}
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d={hasVoted ? "M19 9l-7 7-7-7" : "M5 15l7-7 7 7"}
+        ></path>
+      </svg>
+      <span
+        className={
+          hasVoted
+            ? "text-white font-jost font-regular"
+            : "text-midnightBlue font-jost font-regular"
+        }
+      >
+        {votes}
+      </span>
+    </button>
+  );
+};
+
+export { VoteButton };
