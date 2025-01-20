@@ -2,7 +2,7 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <header className="flex items-center justify-between bg-indigo-900 text-white p-4 rounded-lg">
+    <header className="flex items-center justify-between bg-midnight text-white p-4 rounded-lg">
       {/* Suggestions Count */}
       <div className="flex items-center gap-2">
         <svg
