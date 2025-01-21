@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 
-type ButtonType = "delete" | "cancel" | "add" | "save" | "edit";
+type ButtonType =
+  | "delete"
+  | "cancel"
+  | "+ Add Feedback"
+  | "Save Changes"
+  | "Edit Feedback"
+  | "Add Feedback";
 
 interface ButtonProps {
   type: ButtonType; // Button action type
@@ -22,12 +28,17 @@ const Button: React.FC<ButtonProps> = ({
 
   const typeStyles: Record<ButtonType, string> = {
     delete:
-      "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 focus:ring-2",
+      "bg-red font-jost font-regular text-white hover:bg-red-700 focus:ring-red-500 focus:ring-2",
     cancel:
-      "bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-400 focus:ring-2",
-    add: "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 focus:ring-2",
-    save: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 focus:ring-2",
-    edit: "bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-400 focus:ring-2",
+      "bg-midnightBlue  font-jost font-regular text-gray-700 hover:bg-gray-300 focus:ring-gray-400 focus:ring-2",
+    "+ Add Feedback":
+      "bg-purple text-white font-jost font-regular hover:bg-green-700 focus:ring-green-500 focus:ring-2",
+    "Save Changes":
+      "bg-blue text-white font-jost font-regular hover:bg-blue-700 focus:ring-blue-500 focus:ring-2",
+    "Edit Feedback":
+      "bg-blue text-white font-jost font-regular hover:bg-yellow-600 focus:ring-yellow-400 focus:ring-2",
+    "Add Feedback":
+      "bg-purple text-white font-jost font-regular hover:bg-green-700 focus:ring-green-500 focus:ring-2",
   };
 
   return (

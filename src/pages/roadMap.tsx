@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button, SortButton } from "../components/common/Button";
+import { SortButton } from "../components/common/Button";
 import FeedbackCard from "../components/common/feedBacks";
-import icon from "../assets/icon.svg";
+
 const HomePage = () => {
   const [sortOption, setSortOption] = useState<string>("Most Upvotes");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -223,42 +223,21 @@ const HomePage = () => {
             className="overflow-hidden overflow-y-auto max-h-[500px] space-y-4"
             style={{ maxHeight: "500px" }}
           >
-            {filteredFeedbackList.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-[500px]  bg-gray text-center">
-                <div className=" ">
-                  <div className="w-24  mx-auto bg-gray rounded-full flex items-center justify-center">
-                    <span className="text-gray">
-                      <img src={icon} />
-                    </span>
-                  </div>
-                </div>
-                <h1 className="text-2xl font-semibold font-jost text-midnightBlue mb-2">
-                  There is no feedback yet.
-                </h1>
-                <p className="text-darkGray  font-jost mb-6">
-                  Got a suggestion? Found a bug that needs to be squashed?{" "}
-                  <br />
-                  We love hearing about new ideas to improve our app.
-                </p>
-                <Button
-                  type={"+ Add Feedback"}
-                  onClick={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
-                />
-                {/* <button className="px-6 py-3 bg-purple text-white rounded-lg hover:bg-purple-700">
-                  + Add Feedback
-                </button> */}
-              </div>
-            ) : (
-              filteredFeedbackList.map((feedback) => (
-                <FeedbackCard
-                  key={feedback.id}
-                  {...feedback}
-                  onVote={handleVote}
-                />
-              ))
-            )}
+            {/* {filteredFeedbackList.map((feedback) => (
+              <FeedbackCard
+                key={feedback.id}
+                {...feedback}
+                onVote={(newVote) => handleVote(feedback.id, newVote)}
+                className="hover:shadow-lg transition-shadow duration-200"
+              />
+            ))} */}
+            {filteredFeedbackList.map((feedback) => (
+              <FeedbackCard
+                key={feedback.id}
+                {...feedback}
+                onVote={handleVote}
+              />
+            ))}
           </div>
         </div>
       </section>
